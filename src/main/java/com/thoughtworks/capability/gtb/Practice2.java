@@ -1,5 +1,6 @@
 package com.thoughtworks.capability.gtb;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 /**
@@ -10,7 +11,29 @@ import java.time.LocalDate;
  */
 public class Practice2 {
 
+  public static boolean isWeekend(LocalDate date){
+
+    DayOfWeek dayOfWeek = date.getDayOfWeek();
+    return dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.SATURDAY;
+//    Calendar cal = Calendar.getInstance();
+//
+//    ZoneId zoneId = ZoneId.systemDefault();
+//    ZonedDateTime zdt = date.atStartOfDay(zoneId);
+//    cal.setTime(Date.from(zdt.toInstant()));
+//    return cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+  }
+
   public static LocalDate getNextWorkDate(LocalDate date) {
-    return null;
+    LocalDate tomorrow = date.plusDays(1);
+
+    while (isWeekend(tomorrow)){
+      tomorrow = tomorrow.plusDays(1);
+    }
+    return tomorrow;
+  }
+
+  public static void main(String[] args){
+    LocalDate now = LocalDate.of(2020,6,12);
+    System.out.println(getNextWorkDate(now));
   }
 }

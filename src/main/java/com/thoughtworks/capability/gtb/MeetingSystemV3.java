@@ -1,6 +1,8 @@
 package com.thoughtworks.capability.gtb;
 
-import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -20,22 +22,36 @@ public class MeetingSystemV3 {
   public static void main(String[] args) {
     String timeStr = "2020-04-01 14:30:00";
 
-    // 根据格式创建格式化类
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    // 从字符串解析得到会议时间
-    LocalDateTime meetingTime = LocalDateTime.parse(timeStr, formatter);
 
-    LocalDateTime now = LocalDateTime.now();
-    if (now.isAfter(meetingTime)) {
-      LocalDateTime tomorrow = now.plusDays(1);
-      int newDayOfYear = tomorrow.getDayOfYear();
-      meetingTime = meetingTime.withDayOfYear(newDayOfYear);
+    //London
+    formatter = formatter.withZone(ZoneId.of("Europe/London"));
+    ZonedDateTime londonTime = ZonedDateTime.parse(timeStr, formatter);
+    String londonFor = formatter.format(londonTime);
+    System.out.println("London:" + londonFor);
 
-      // 格式化新会议时间
-      String showTimeStr = formatter.format(meetingTime);
-      System.out.println(showTimeStr);
-    } else {
+    //shanghai
+    ZonedDateTime shanghaiTime = londonTime.withZoneSameInstant(ZoneId.of("Asia/Shanghai"));
+    formatter = formatter.withZone(ZoneId.of("Asia/Shanghai"));
+    String shanghaiFor = formatter.format(shanghaiTime);
+    System.out.println("shanghai:"+shanghaiFor);
+
+    ZonedDateTime now = ZonedDateTime.now();
+    if(now.isAfter(shanghaiTime)){
+      //set new meeting time
+      Period days = Period.of(0, 0, 1);
+      ZonedDateTime newMeetingTime = now.plus(days);
+      String newTime = formatter.format(newMeetingTime);
+      System.out.println("new meetingTime(shanghai):" + newTime);
+
+      //new meetTime to Chicago
+      ZonedDateTime chicagoTime = newMeetingTime.withZoneSameInstant(ZoneId.of("America/Chicago"));
+      formatter = formatter.withZone(ZoneId.of("America/Chicago"));
+      String chicagoFor = formatter.format(chicagoTime);
+      System.out.println("new meetingTime(Chicago):"+chicagoFor);
+    }else{
       System.out.println("会议还没开始呢");
     }
   }
 }
+
