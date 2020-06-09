@@ -1,6 +1,7 @@
 package com.thoughtworks.capability.gtb;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
 /**
@@ -17,7 +18,8 @@ public class Practice1 {
     long days = 0;
 
     if (date.isAfter(laborDay)) {
-      LocalDate nextLaborDay = date.plusYears(1);
+
+      LocalDate nextLaborDay = laborDay.plus(Period.ofYears(1));
       int dayOfYear = nextLaborDay.getDayOfYear();
       nextLaborDay = nextLaborDay.withDayOfYear(dayOfYear);
       days = ChronoUnit.DAYS.between(date, nextLaborDay);
@@ -27,7 +29,7 @@ public class Practice1 {
     return days;
   }
   public static void main(String[] args){
-    LocalDate now = LocalDate.of(2020,4,1);
+    LocalDate now = LocalDate.of(2020,6,1);
     long daysBetweenNextLaborDay = getDaysBetweenNextLaborDay(now);
     System.out.println(daysBetweenNextLaborDay);
   }
