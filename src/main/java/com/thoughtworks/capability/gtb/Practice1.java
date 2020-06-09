@@ -18,10 +18,7 @@ public class Practice1 {
     long days = 0;
 
     if (date.isAfter(laborDay)) {
-
       LocalDate nextLaborDay = laborDay.plus(Period.ofYears(1));
-      int dayOfYear = nextLaborDay.getDayOfYear();
-      nextLaborDay = nextLaborDay.withDayOfYear(dayOfYear);
       days = ChronoUnit.DAYS.between(date, nextLaborDay);
     }else{
       days = ChronoUnit.DAYS.between(date, laborDay);
