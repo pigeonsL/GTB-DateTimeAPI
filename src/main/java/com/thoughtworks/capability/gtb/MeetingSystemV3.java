@@ -38,9 +38,9 @@ public class MeetingSystemV3 {
 
     ZonedDateTime now = ZonedDateTime.now();
     if(now.isAfter(shanghaiTime)){
-      //set new meeting time
-      Period days = Period.of(0, 0, 1);
-      ZonedDateTime newMeetingTime = now.plus(days);
+      //set new meeting time(shanghai)
+      //旧会议时间+1天，仍然是过期时间，所以此处采用当前时间+1天
+      ZonedDateTime newMeetingTime = now.plus(Period.ofDays(1));
       String newTime = formatter.format(newMeetingTime);
       System.out.println("new meetingTime(shanghai):" + newTime);
 
